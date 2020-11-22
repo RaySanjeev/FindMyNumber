@@ -2,6 +2,7 @@
 // GLOBAL VARIABLES
 let score = 20;
 let highscore = 0;
+let state = true;
 
 // DOM ELEMENTS
 const body = document.querySelector('body');
@@ -17,37 +18,44 @@ const label_highscore = document.querySelector('.highscore');
 
 let randomNumber = Math.trunc(Math.random() * 20) + 1;
 
-check.addEventListener('click', () => {
-  if (!guess.value) {
-    message.textContent = 'Please enter a number!';
-  }
-  const checkValue = Number(guess.value);
-
-  if (checkValue === randomNumber) {
-    message.textContent = 'Correct Number';
-    body.style.backgroundColor = '#60b347';
-    label_score.textContent = score;
-    number.textContent = randomNumber;
-
-    if (score > highscore) {
-      highscore = score;
-      label_highscore.textContent = highscore;
+check.addEventListener('click', (e) => {
+  if (state) {
+    if (!guess.value) {
+      message.textContent = 'Please enter a number!';
     }
-  }
+    const checkValue = Number(guess.value);
 
-  if (checkValue > randomNumber) {
-    message.textContent = 'Too High!';
-    score = score - 1;
-  }
+    if (checkValue === randomNumber) {
+      message.textContent = 'Correct Number';
+      body.style.backgroundColor = '#60b347';
+      label_score.textContent = score;
+      number.textContent = randomNumber;
+      state = false;
 
-  if (checkValue < randomNumber) {
-    message.textContent = 'Too Low';
-    score = score - 1;
+      if (score > highscore) {
+        highscore = score;
+        label_highscore.textContent = highscore;
+      }
+    }
+
+    if (checkValue > randomNumber) {
+      message.textContent = 'Too High!';
+      score = score - 1;
+    }
+
+    if (checkValue < randomNumber) {
+      message.textContent = 'Too Low';
+      score = score - 1;
+    }
+  } else {
+    message.textContent = 'Please restart again!';
+    body.style.backgroundColor = '#222';
   }
 });
 
 again.addEventListener('click', () => {
   score = 20;
+  state = true;
   message.textContent = 'Start guessing...';
   label_score.textContent = score;
   body.style.backgroundColor = '#222';
