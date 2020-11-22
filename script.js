@@ -18,10 +18,10 @@ const label_highscore = document.querySelector('.highscore');
 
 let randomNumber = Math.trunc(Math.random() * 20) + 1;
 
-check.addEventListener('click', (e) => {
+function gameLogic() {
   if (state) {
     if (!guess.value) {
-      message.textContent = 'Please enter a number!';
+      return (message.textContent = 'Please enter a number!');
     }
     const checkValue = Number(guess.value);
 
@@ -36,14 +36,10 @@ check.addEventListener('click', (e) => {
         highscore = score;
         label_highscore.textContent = highscore;
       }
-    }
-
-    if (checkValue > randomNumber) {
+    } else if (checkValue > randomNumber) {
       message.textContent = 'Too High!';
       score = score - 1;
-    }
-
-    if (checkValue < randomNumber) {
+    } else {
       message.textContent = 'Too Low';
       score = score - 1;
     }
@@ -51,6 +47,14 @@ check.addEventListener('click', (e) => {
     message.textContent = 'Please restart again!';
     body.style.backgroundColor = '#222';
   }
+}
+
+check.addEventListener('click', () => {
+  gameLogic();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') gameLogic();
 });
 
 again.addEventListener('click', () => {
